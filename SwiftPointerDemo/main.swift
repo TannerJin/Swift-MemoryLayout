@@ -22,7 +22,7 @@ print("Class =>")
 let objc_A_Pointer = unsafeBitCast(a1, to: UnsafeMutablePointer<UInt64>.self)
 print("\na strong references count =>:", StrongRefCount(objc_A_Pointer))
 
-unowned var unowned_a = a1
+unowned let unowned_a = a1
 print("a unowned references count =>:", UnownedRefCount(objc_A_Pointer))
 
 print("a has weak references =>:", hasWeakRefCount(objc_A_Pointer))
