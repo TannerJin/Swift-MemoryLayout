@@ -15,6 +15,7 @@
 		A93D6CFB22F2B37800650822 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D6CFA22F2B37800650822 /* Character.swift */; };
 		A93D6CFD22F2C4A700650822 /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D6CFC22F2C4A700650822 /* Optional.swift */; };
 		A93D6CFF22F2CE5E00650822 /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D6CFE22F2CE5E00650822 /* Set.swift */; };
+		A93D6D1522F4237F00650822 /* Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D6D1422F4237F00650822 /* Class.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,6 +40,7 @@
 		A93D6CFA22F2B37800650822 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		A93D6CFC22F2C4A700650822 /* Optional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
 		A93D6CFE22F2CE5E00650822 /* Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
+		A93D6D1422F4237F00650822 /* Class.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Class.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 		A93D6CE622F1886C00650822 /* SwiftPointerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				A93D6D1322F4236700650822 /* SwiftRuntime */,
 				A93D6CF022F1CE5500650822 /* SwiftCorePointer */,
 				A93D6CE722F1886C00650822 /* main.swift */,
 			);
@@ -89,6 +92,14 @@
 				A93D6CFE22F2CE5E00650822 /* Set.swift */,
 			);
 			path = SwiftCorePointer;
+			sourceTree = "<group>";
+		};
+		A93D6D1322F4236700650822 /* SwiftRuntime */ = {
+			isa = PBXGroup;
+			children = (
+				A93D6D1422F4237F00650822 /* Class.swift */,
+			);
+			path = SwiftRuntime;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,6 +162,7 @@
 				A93D6CFF22F2CE5E00650822 /* Set.swift in Sources */,
 				A93D6CF222F1CE6600650822 /* String.swift in Sources */,
 				A93D6CF622F1CE9000650822 /* Dictionary.swift in Sources */,
+				A93D6D1522F4237F00650822 /* Class.swift in Sources */,
 				A93D6CF422F1CE7800650822 /* Array.swift in Sources */,
 				A93D6CFD22F2C4A700650822 /* Optional.swift in Sources */,
 				A93D6CFB22F2B37800650822 /* Character.swift in Sources */,
