@@ -3,6 +3,25 @@ swiftCorePointer based on swiftCore memoryLayout
 
 **swift version =>: swift 5.0**
 
+## Swift
+
+### [Class](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftRuntime/Class.swift)   
+
+```swift
+class A {
+  var a = 666
+}
+let objcA = A()
+unowned let unowned_objcA = objcA
+let objcAPointer = unsafeBitCast(a1, to: UnsafeMutablePointer<UInt64>.self)
+
+let strongRefCount = StrongRefCount(objcAPointer)
+let unownedRefCount = UnownedRefCount(objcAPointer)
+let hasWeakRef = hasWeakRefCount(objcAPointer)
+```
+
+## SwiftCore
+
 ### [Bool](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftCorePointer/Bool.swift)
 
 ```swift
