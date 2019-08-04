@@ -51,7 +51,7 @@ characterPointer.advanced(by: 3).initialize(to: 0x80)
 ```swift
 let array = ["Apple", "Swift"]
 let arrayPointer = array.valuePointer
-array.initialize(to: "Tanner")
+arrayPointer.initialize(to: "Tanner")
 
 // array = ["Tanner", "Swift"]
 
