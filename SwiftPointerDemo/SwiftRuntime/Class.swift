@@ -79,12 +79,10 @@ import Foundation
 // SideTableMark
 // (1 bit)
 
-
-public func hasWeakRefCount(_ objcPointer: UnsafeMutablePointer<UInt64>) -> Bool {
-    // UseSlow && !IsImmortal
-    let nsobjcPointer = unsafeBitCast(NSObject(), to: UnsafeMutablePointer<UInt64>.self)
-    assert((objcPointer.pointee != nsobjcPointer.pointee), "NSObject's instace has not refCount")
+public func hasWeakRefCount<T: AnyObject>(_ objc: T) -> Bool {
+    assertNotNSObject(objc)
     
+    let objcPointer = unsafeBitCast(objc, to: UnsafeMutablePointer<UInt64>.self)
     let bitsValue = objcPointer.advanced(by: 1).pointee
     
     let isImmortalMask: UInt64 = 1
@@ -98,20 +96,22 @@ public func hasWeakRefCount(_ objcPointer: UnsafeMutablePointer<UInt64>) -> Bool
 
 // Return unowned reference count.
 // Note that this is not equal to the number of outstanding unowned pointers.
-public func UnownedRefCount(_ objcPointer: UnsafeMutablePointer<UInt64>) -> UInt32 {
-    assertNotNSObject(objcPointer)
-    assert(!hasWeakRefCount(objcPointer), "wait to do")
+public func UnownedRefCount<T: AnyObject>(_ objc: T) -> UInt32 {
+    assertNotNSObject(objc)
+    assert(!hasWeakRefCount(objc), "wait to do")
     
+    let objcPointer = unsafeBitCast(objc, to: UnsafeMutablePointer<UInt64>.self)
     let bitsValue = objcPointer.advanced(by: 1).pointee
     var mask: UInt64 = 1 << 31 - 1                    // 31 bits => 111...111
     mask <<= 1                                        // 32 bits => 111...110
     return UInt32((bitsValue & mask) >> 1) - 1        // at init refCount (strong: 0, Unowned: 1)
 }
 
-public func StrongRefCount(_ objcPointer: UnsafeMutablePointer<UInt64>) -> UInt32 {
-    assertNotNSObject(objcPointer)
-    assert(!hasWeakRefCount(objcPointer), "wait to do")
+public func StrongRefCount<T: AnyObject>(_ objc: T) -> UInt32 {
+    assertNotNSObject(objc)
+    assert(!hasWeakRefCount(objc), "wait to do")
     
+    let objcPointer = unsafeBitCast(objc, to: UnsafeMutablePointer<UInt64>.self)
     let bitsValue = objcPointer.advanced(by: 1).pointee
     var mask: UInt64 = 1 << 30 - 1                    // 30 bits => 111...111
     mask <<= 33                                       // 63 bits => 111...111000...000
@@ -120,10 +120,10 @@ public func StrongRefCount(_ objcPointer: UnsafeMutablePointer<UInt64>) -> UInt3
 
 
 // nil: has not weak reference
-public func WeakRefCount(_ objcPointer: UnsafeMutablePointer<UInt64>) -> UInt32? {
-    assertNotNSObject(objcPointer)
+public func WeakRefCount<T: AnyObject>(_ objc: T) -> UInt32? {
+    assertNotNSObject(objc)
     
-    if !hasWeakRefCount(objcPointer) {
+    if !hasWeakRefCount(objc) {
         return nil
     }
     
@@ -133,15 +133,17 @@ public func WeakRefCount(_ objcPointer: UnsafeMutablePointer<UInt64>) -> UInt32?
 
 
 // MARK: - Helper
-private func assertNotNSObject(_ objcPointer: UnsafeMutablePointer<UInt64>) {
+private func assertNotNSObject<T: AnyObject>(_ objc: T) {
+    let objcPointer = unsafeBitCast(objc, to: UnsafeMutablePointer<UInt64>.self)
     let nsobjcPointer = unsafeBitCast(NSObject(), to: UnsafeMutablePointer<UInt64>.self)
     assert((objcPointer.pointee != nsobjcPointer.pointee), "NSObject's instace has not refCount")
 }
 
-private func getSileTablePointer(_ objcPointer: UnsafeMutablePointer<UInt64>) -> UnsafeMutableRawPointer? {
-    assertNotNSObject(objcPointer)
-    assert(hasWeakRefCount(objcPointer))
+private func getSileTablePointer<T: AnyObject>(_ objc: T) -> UnsafeMutableRawPointer? {
+    assertNotNSObject(objc)
+    assert(hasWeakRefCount(objc))
     
+    let objcPointer = unsafeBitCast(objc, to: UnsafeMutablePointer<UInt64>.self)
     let bitsValue = objcPointer.advanced(by: 1).pointee
     let mask: UInt64 = 1 << 62 - 1                  // 62 bits => 111...111
     let slieTableValue = bitsValue & mask
