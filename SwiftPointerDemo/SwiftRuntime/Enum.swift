@@ -39,8 +39,7 @@ import Foundation
 // |    case a                    00  count |   \
 // |    case d                    01  count |    offset(1 byte) + all association's enum count
 // |    case e                    02  count |   /
-// +----------------------------------------+ --
-// +----------------------------------------+ --
+// |                                        |
 // |    case b(String)           string  00 |   \
 // |    case c(Int32)             Int32  01 |    association's value(16 bytes) + offset(1 byte)
 // |    case f(Int64)             Int64  02 |   /

@@ -8,6 +8,42 @@
 
 import Foundation
 
+print("Hello, Swift\n")
+
+// MARK: ---------------------------------- Struct ----------------------------------
+struct StructValue {
+    let a: Int8 = 4
+    let b: Int16 = 6
+    let c: Int32 = 8
+}
+
+var structValue = StructValue()
+let structValuePointer = withUnsafePointer(to: &structValue) { (pointer) -> UnsafeMutableRawPointer in
+    UnsafeMutableRawPointer(OpaquePointer(pointer))
+}
+structValuePointer.advanced(by: 2).assumingMemoryBound(to: Int16.self).initialize(to: 99)
+print("Struct =>:", structValue.b)
+
+
+// MARK: ---------------------------------- Enum ----------------------------------
+enum EnumValue {
+    case a
+    case b(String)
+    case c(Int32)
+    case d
+    case f(Int64)
+    case e
+}
+
+var enumC = EnumValue.c(8)
+print("\nEnum =>:", enumC)
+let enumPointer = withUnsafePointer(to: &enumC) { (pointer) -> UnsafeMutableRawPointer in
+    UnsafeMutableRawPointer(OpaquePointer(pointer))
+}
+enumPointer.advanced(by: 16).assumingMemoryBound(to: Int8.self).initialize(to: 0x02)
+print("Enum =>:", enumC)
+
+
 // MARK: ---------------------------------- Class ----------------------------------
 
 class A {
@@ -17,9 +53,9 @@ class A {
 let a1 = A()
 let a2 = a1
 let a3 = a2
-print("Class =>")
+print("\nClass =>")
 
-print("\na strong references count =>:", StrongRefCount(a1))
+print("a strong references count =>:", StrongRefCount(a1))
 
 unowned let unowned_a = a1
 print("a unowned references count =>:", UnownedRefCount(a1))
@@ -27,6 +63,9 @@ print("a unowned references count =>:", UnownedRefCount(a1))
 print("a has weak references =>:", hasWeakRefCount(a1))
 weak var weak_a1 = unowned_a
 print("a has weak references =>:", hasWeakRefCount(a1))
+
+
+// ------------------------------------------------------------------------------------------------------
 
 
 // MARK: ---------------------------------- Bool ----------------------------------
@@ -87,27 +126,3 @@ let set: Set<String> = ["iOS", "Apple", "Swift"]
 print("\nSet =>:", set)
 print("Set.value.count =>:", set.countPointer.pointee)
 print("Set.value.address =>:", set.valuesPointer)
-
-
-let tuple: (Int16, Int8, Int16) = (2, 3, 5)
-print("\nHello World")
-
-
-// MARK: ---------------------------------- Enum ----------------------------------
-enum EnumValue {
-    case a
-    case b(String)
-    case c(Int32)
-    case d
-    case f(Int64)
-    case e
-}
-
-var enumC = EnumValue.c(8)
-print("\nEnum =>:", enumC)
-let enumPointer = withUnsafePointer(to: &enumC) { (pointer) -> UnsafeMutableRawPointer in
-     UnsafeMutableRawPointer(OpaquePointer(pointer))
-}
-enumPointer.advanced(by: 16).assumingMemoryBound(to: Int8.self).initialize(to: 0x02)
-print("\nEnum =>:", enumC)
-// enumC = EnumValue.f
