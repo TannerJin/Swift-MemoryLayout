@@ -36,48 +36,48 @@ import Foundation
 //                      +------------------------------------------------------------------------+
 //                      |
 //                      V
-//  refCount(8 bytes, 64 bits)
-//     /
-//    |
-//    V
-//  InlineRefCounts {
-//      atomic<InlineRefCountBits> {
-//          strong RC + unowned RC + flags
-//          OR
-//          HeapObjectSideTableEntry*
-//      }          /
-//  }             |
-//                V
-//  HeapObjectSideTableEntry {
-//      SideTableRefCounts {
-//          object pointer
-//          atomic<SideTableRefCountBits> {
-//              strong RC + unowned RC + weak RC + flags
-//          }
-//      }
-//  }
+//    refCount(8 bytes, 64 bits)
+//       /
+//      |
+//      V
+//    InlineRefCounts {
+//        atomic<InlineRefCountBits> {
+//            strong RC + unowned RC + flags
+//            OR
+//            HeapObjectSideTableEntry*
+//        }          /
+//    }             |
+//                  V
+//    HeapObjectSideTableEntry {
+//        SideTableRefCounts {
+//            object pointer
+//            atomic<SideTableRefCountBits> {
+//                strong RC + unowned RC + weak RC + flags
+//            }
+//        }
+//    }
 
-//  InlineRefCountBits (64 bits)
-//  0000000000000000000000000000000000000000000000000000000000000000
-//  ||                            |||                             ||
-//  | \         30 bits          / | \          31 bits          / |
-//  |  \   StrongExtraRefCount  /  |  \     UnownedRefCount     /  |
-//  |   \______________________/   |   \_______________________/   |
-//  |                              |                               |
-//  V                              V                               V
-// UseSlow                     IsDeiniting                     IsImmortal
-// (1 bit)                       (1 bit)                        (1 bit)
+//    InlineRefCountBits (64 bits)
+//    0000000000000000000000000000000000000000000000000000000000000000
+//    ||                            |||                             ||
+//    | \         30 bits          / | \          31 bits          / |
+//    |  \   StrongExtraRefCount  /  |  \     UnownedRefCount     /  |
+//    |   \______________________/   |   \_______________________/   |
+//    |                              |                               |
+//    V                              V                               V
+//   UseSlow                     IsDeiniting                     IsImmortal
+//   (1 bit)                       (1 bit)                        (1 bit)
 
-//  HeapObjectSideTableEntry* (64 bits)
-//  0000000000000000000000000000000000000000000000000000000000000000
-//   ||                                                            |
-//   | \                      62 bits                             /
-//   |  \              HeapObjectSideTableEntry*                 /
-//   |   \______________________________________________________/
-//   |
-//   V
-// SideTableMark
-// (1 bit)
+//    HeapObjectSideTableEntry* (64 bits)
+//    0000000000000000000000000000000000000000000000000000000000000000
+//     ||                                                            |
+//     | \                      62 bits                             /
+//     |  \              HeapObjectSideTableEntry*                 /
+//     |   \______________________________________________________/
+//     |
+//     V
+//   SideTableMark
+//   (1 bit)
 
 public func hasWeakRefCount<T: AnyObject>(_ objc: T) -> Bool {
     assertNotNSObject(objc)
