@@ -91,3 +91,23 @@ print("Set.value.address =>:", set.valuesPointer)
 
 let tuple: (Int16, Int8, Int16) = (2, 3, 5)
 print("\nHello World")
+
+
+// MARK: ---------------------------------- Enum ----------------------------------
+enum EnumValue {
+    case a
+    case b(String)
+    case c(Int32)
+    case d
+    case f(Int64)
+    case e
+}
+
+var enumC = EnumValue.c(8)
+print("\nEnum =>:", enumC)
+let enumPointer = withUnsafePointer(to: &enumC) { (pointer) -> UnsafeMutableRawPointer in
+     UnsafeMutableRawPointer(OpaquePointer(pointer))
+}
+enumPointer.advanced(by: 16).assumingMemoryBound(to: Int8.self).initialize(to: 0x02)
+print("\nEnum =>:", enumC)
+// enumC = EnumValue.f

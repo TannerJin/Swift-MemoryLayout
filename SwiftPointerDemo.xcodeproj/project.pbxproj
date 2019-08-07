@@ -16,6 +16,8 @@
 		A93D6CFD22F2C4A700650822 /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D6CFC22F2C4A700650822 /* Optional.swift */; };
 		A93D6CFF22F2CE5E00650822 /* Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D6CFE22F2CE5E00650822 /* Set.swift */; };
 		A93D6D1522F4237F00650822 /* Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93D6D1422F4237F00650822 /* Class.swift */; };
+		A9B7B9E822F955FE001EA2AA /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B7B9E722F955FE001EA2AA /* Enum.swift */; };
+		A9B7B9EA22F95634001EA2AA /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B7B9E922F95634001EA2AA /* Protocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +43,8 @@
 		A93D6CFC22F2C4A700650822 /* Optional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
 		A93D6CFE22F2CE5E00650822 /* Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Set.swift; sourceTree = "<group>"; };
 		A93D6D1422F4237F00650822 /* Class.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Class.swift; sourceTree = "<group>"; };
+		A9B7B9E722F955FE001EA2AA /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
+		A9B7B9E922F95634001EA2AA /* Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +102,8 @@
 			isa = PBXGroup;
 			children = (
 				A93D6D1422F4237F00650822 /* Class.swift */,
+				A9B7B9E722F955FE001EA2AA /* Enum.swift */,
+				A9B7B9E922F95634001EA2AA /* Protocol.swift */,
 			);
 			path = SwiftRuntime;
 			sourceTree = "<group>";
@@ -165,8 +171,10 @@
 				A93D6D1522F4237F00650822 /* Class.swift in Sources */,
 				A93D6CF422F1CE7800650822 /* Array.swift in Sources */,
 				A93D6CFD22F2C4A700650822 /* Optional.swift in Sources */,
+				A9B7B9EA22F95634001EA2AA /* Protocol.swift in Sources */,
 				A93D6CFB22F2B37800650822 /* Character.swift in Sources */,
 				A93D6CF922F2AFB100650822 /* Bool.swift in Sources */,
+				A9B7B9E822F955FE001EA2AA /* Enum.swift in Sources */,
 				A93D6CE822F1886C00650822 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
