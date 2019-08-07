@@ -11,13 +11,15 @@ swiftCorePointer based on swiftCore memoryLayout
 class A {
   var a = 666
 }
-let objcA = A()
-unowned let unowned_objcA = objcA
-let objcAPointer = unsafeBitCast(a1, to: UnsafeMutablePointer<UInt64>.self)
 
-let strongRefCount = StrongRefCount(objcAPointer)
-let unownedRefCount = UnownedRefCount(objcAPointer)
-let hasWeakRef = hasWeakRefCount(objcAPointer)
+let a1 = A()
+unowned let unowned_a = a1
+let a2 = a1
+let a3 = a2
+
+let strongRefCount = StrongRefCount(a1)
+let unownedRefCount = UnownedRefCount(a1)
+let hasWeakRef = hasWeakRefCount(a1)
 ```
 
 ## SwiftCore
