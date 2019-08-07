@@ -1,11 +1,11 @@
 //
 //  main.swift
-//  SwiftPointerDemo
+//  SwiftDemo
 //
-//  Created by jintao on 2019/7/31.
+//  Created by jintao on 2019/8/7.
 //  Copyright © 2019 jintao. All rights reserved.
 //
 
 import Foundation
 
-print("Hello, Swift\n")
+print("Hello, Swift!")
