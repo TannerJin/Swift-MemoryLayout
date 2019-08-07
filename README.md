@@ -19,7 +19,7 @@
   
 ## Swift
 
-### [Struct](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftRuntime/Struct.swift)
+### [Struct](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/Swift/Struct.swift)
 
 ```swift
 struct StructValue {
@@ -37,7 +37,7 @@ structValuePointer.advanced(by: 2).assumingMemoryBound(to: Int16.self).initializ
 // structValue.b = 99
 ```
 
-### [Class](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftRuntime/Class.swift)   
+### [Class](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/Swift/Class.swift)   
 
 ```swift
 class A {
@@ -54,7 +54,7 @@ let unownedRefCount = UnownedRefCount(a1)
 let hasWeakRef = hasWeakRefCount(a1)
 ```
 
-### [Protocol](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftRuntime/Protocol.swift)
+### [Protocol](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/Swift/Protocol.swift)
 
 ```swift
 protocol SwiftProtocol {
@@ -88,7 +88,7 @@ foo2_pointer()
 // print foo2
 ```
 
-### [Enum](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftRuntime/Enum.swift)   
+### [Enum](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/Swift/Enum.swift)   
 
 ```swift
 enum EnumValue {
@@ -112,7 +112,7 @@ enumCPointer.advanced(by: 16).assumingMemoryBound(to: Int8.self).initialize(to: 
 
 ## SwiftCore
 
-### [Bool](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftCorePointer/Bool.swift)
+### [Bool](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/SwiftCore/Bool.swift)
 
 ```swift
 var bool = true
@@ -122,7 +122,7 @@ boolPointer.initialize(to: 0)
 // bool = false 
 ```
 
-### [Optional](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftCorePointer/Optional.swift)
+### [Optional](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/SwiftCore/Optional.swift)
 
 ```swift
 var optional: Int16?
@@ -132,7 +132,7 @@ optionalPointer.assumingMemoryBound(to: Int16.self).initialize(to: 99)
 // optional = 99
 ```
 
-### [String](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftCorePointer/String.swift)
+### [String](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/SwiftCore/String.swift)
 
 ```swift
 var string = "TannerJin"
@@ -142,7 +142,7 @@ stringPointer.assumingMemoryBound(to: Int8.self).initialize(to: 0x40)      // 0x
 // string = "@anner Jin"    
 ```
 
-### [Character](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftCorePointer/Character.swift)
+### [Character](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/SwiftCore/Character.swift)
 
 ```swift
 var character = Character("😂")
@@ -155,7 +155,7 @@ characterPointer.advanced(by: 3).initialize(to: 0x80)
 // character = "🚀"
 ```
 
-### [Array](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftCorePointer/Array.swift)
+### [Array](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/SwiftCore/Array.swift)
 
 ```swift
 let array = ["Apple", "Swift"]
@@ -169,7 +169,7 @@ array.countPointer.initialize(to: 3)
 // array.count = 3
 ```
 
-### [Set](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftCorePointer/Set.swift)
+### [Set](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/SwiftCore/Set.swift)
 
  ```swift
  let set: Set<String> = ["Apple", "iOS", "Swift"]
@@ -182,7 +182,7 @@ array.countPointer.initialize(to: 3)
  // set.count = 2
  ```
 
-### [Dictionary](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftCorePointer/Dictionary.swift)
+### [Dictionary](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/SwiftCore/Dictionary.swift)
 
 ```swift
 let dictionary = ["Swift": 5.0, "iOS": 2019]
