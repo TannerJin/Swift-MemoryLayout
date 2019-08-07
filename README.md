@@ -40,6 +40,40 @@ let unownedRefCount = UnownedRefCount(a1)
 let hasWeakRef = hasWeakRefCount(a1)
 ```
 
+### [Protocol](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftRuntime/Protocol.swift)
+
+```swift
+protocol SwiftProtocol {
+    func foo()
+    func foo2()
+}
+
+struct StructValue: SwiftProtocol {
+    func foo() {
+        print("foo")
+    }
+    
+    func foo2() {
+        print("foo2")
+    }
+}
+
+var Protocol: SwiftProtocol = StructValue()
+let protocol_pointer = withUnsafePointer(to: &Protocol) { (pointer) -> UnsafeMutableRawPointer in
+    UnsafeMutableRawPointer(OpaquePointer(pointer))
+}
+
+let witness_table_pointer_value = protocol_pointer.advanced(by: 32).assumingMemoryBound(to: UInt.self).pointee
+let witness_table_pointer = UnsafeMutablePointer<UnsafeMutableRawPointer>.init(bitPattern: witness_table_pointer_value)
+
+typealias FooMethod = @convention(thin) ()->Void
+
+let foo2_pointer = unsafeBitCast(witness_table_pointer!.advanced(by: 2).pointee, to: FooMethod.self)
+foo2_pointer()
+
+// print foo2
+```
+
 ### [Enum](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftRuntime/Enum.swift)   
 
 ```swift
