@@ -117,7 +117,7 @@ enumCPointer.advanced(by: 16).assumingMemoryBound(to: Int8.self).initialize(to: 
 ```swift
 var bool = true
 let boolPointer = bool.valuePointer
-boolPointer.initialize(to: 0)
+boolPointer.initialize(to: -10)
 
 // bool = false 
 ```
