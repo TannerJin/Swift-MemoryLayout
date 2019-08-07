@@ -5,6 +5,24 @@ swiftCorePointer based on swiftCore memoryLayout
 
 ## Swift
 
+### [Struct](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftRuntime/Struct.swift)
+
+```swift
+struct StructValue {
+    let a: Int8 = 4
+    let b: Int16 = 6
+    let c: Int32 = 8
+}
+
+var structValue = StructValue()
+let structValuePointer = withUnsafePointer(to: &structValue) { (pointer) -> UnsafeMutableRawPointer in
+    UnsafeMutableRawPointer(OpaquePointer(pointer))
+}
+structValuePointer.advanced(by: 2).assumingMemoryBound(to: Int16.self).initialize(to: 99)
+
+// structValue.b = 99
+```
+
 ### [Class](https://github.com/TannerJin/SwiftCorePointer/blob/master/SwiftPointerDemo/SwiftRuntime/Class.swift)   
 
 ```swift
@@ -41,7 +59,6 @@ let enumCPointer = withUnsafePointer(to: &enumC) { (pointer) -> UnsafeMutableRaw
 enumCPointer.advanced(by: 16).assumingMemoryBound(to: Int8.self).initialize(to: 0x02)
 
 // enumC = EnumValue.f(8)
-
 ```
 
 
