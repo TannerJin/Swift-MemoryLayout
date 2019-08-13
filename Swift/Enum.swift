@@ -37,7 +37,7 @@ import Foundation
 //       V
 //   +----------------------------------------+ --
 //   |    case a                    00  count |   \
-//   |    case d                    01  count |    offset(1 byte) + all association's enum count
+//   |    case d                    01  count |    offset(1 byte) + all count of enums with association(b, c, f; count = 3)
 //   |    case e                    02  count |   /
 //   |                                        |
 //   |    case b(String)           string  00 |   \

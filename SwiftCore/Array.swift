@@ -29,9 +29,9 @@ public extension Array {
 //    +-----------------------------------------------------------------------+
 //    |   struct _SwiftArrayBodyStorage                                       |
 //    |   +--------------------------------------------------------------+    |
-//    |   |    var count: Int                        // 16 byte offset   |    |
-//    |   |    var _capacityAndFlags: Int                                |    |
-//    |   |    var sequence: [Element]               // 32 byte offset   |    |
+//    |   |   var count: Int                        // 16 bytes offset   |    |
+//    |   |   var _capacityAndFlags: Int                                 |    |
+//    |   |   var sequence: [Element]               // 32 bytes offset   |    |
 //    |   +--------------------------------------------------------------+    |
 //    +-----------------------------------------------------------------------+
     

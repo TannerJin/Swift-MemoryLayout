@@ -16,19 +16,19 @@ public extension String {
 //   | | struct _StringObject                       | |
 //   | | +----------------------------------------+ | |
 //   | | | #if arch(i386) || arch(arm)            | | |
-//   | | | enum Variant {                         | | |
-//   | | |   case immortal(UInt)                  | | |
-//   | | |   case native(AnyObject)               | | |
-//   | | |   case bridged(_CocoaString)           | | |
-//   | | | }                                      | | |
-//   | | | var count: UInt                        | | |
-//   | | | var _variant: Variant                  | | |
-//   | | | var _discriminator: UInt8              | | |
-//   | | | var _flags: UInt16                     | | |
-//   | | | var _countAndFlagsBits: UInt64         | | |
+//   | | |   enum Variant {                       | | |
+//   | | |     case immortal(UInt)                | | |
+//   | | |     case native(AnyObject)             | | |
+//   | | |     case bridged(_CocoaString)         | | |
+//   | | |   }                                    | | |
+//   | | |   var count: UInt                      | | |
+//   | | |   var _variant: Variant                | | |
+//   | | |   var _discriminator: UInt8            | | |
+//   | | |   var _flags: UInt16                   | | |
+//   | | |   var _countAndFlagsBits: UInt64       | | |
 //   | | | #else                                  | | |
-//   | | | var _countAndFlagsBits: UInt64         | | |
-//   | | | var _object: Builtin.BridgeObject      | | |
+//   | | |   var _countAndFlagsBits: UInt64       | | |
+//   | | |   var _object: Builtin.BridgeObject    | | |
 //   | | | #endif                                 | | |
 //   | | +----------------------------------------+ | |
 //   | +--------------------------------------------+ |
