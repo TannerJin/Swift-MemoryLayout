@@ -101,10 +101,10 @@ let protocol_pointer = withUnsafePointer(to: &Protocol) { (pointer) -> UnsafeMut
 let witness_table_pointer_value = protocol_pointer.advanced(by: 32).assumingMemoryBound(to: UInt.self).pointee
 let witness_table_pointer = UnsafeMutablePointer<UnsafeMutableRawPointer>.init(bitPattern: witness_table_pointer_value)
 
-typealias FooMethod = @convention(thin) ()->Void
+typealias Foo2Method = @convention(thin) ()->Void
 
-let foo2_pointer = unsafeBitCast(witness_table_pointer!.advanced(by: 2).pointee, to: FooMethod.self)
-foo2_pointer()
+let witness_foo2_pointer = unsafeBitCast(witness_table_pointer!.advanced(by: 2).pointee, to: Foo2Method.self)
+witness_foo2_pointer()
 
 // print foo2
 ```
