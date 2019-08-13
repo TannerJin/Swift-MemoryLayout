@@ -4,6 +4,7 @@
 
 - [Swift](#Swift)
   - [Struct](#Struct)
+  - [Tuple](#Tuple)
   - [Class](#Class)
   - [Protocol](#Protocol)
   - [Enum](#Enum)
@@ -35,6 +36,26 @@ let structValuePointer = withUnsafePointer(to: &structValue) { (pointer) -> Unsa
 structValuePointer.advanced(by: 2).assumingMemoryBound(to: Int16.self).initialize(to: 99)
 
 // structValue.b = 99
+```
+
+### [Tuple](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/Swift/Tuple.swift)
+
+```swift
+typealias TupleValue = (Int8, Int32, String)
+
+struct StructValue {
+    var a: Int8
+    var b: Int32
+    var c: String
+}
+
+let structValue = StructValue(a: 4, b: 5, c: "SwiftTuple")
+let tupleValue = unsafeBitCast(structValue, to: TupleValue.self)
+print(tupleValue.1)
+
+// print 5 (structValue.b)
+
+// if TupleValue = (Int8, Int8, String) => TupleValue's MemoryLayout != StructValue's MemoryLayout
 ```
 
 ### [Class](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/Swift/Class.swift)   
