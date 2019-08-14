@@ -9,3 +9,7 @@
 import Foundation
 
 print("Hello, Swift!")
+
+let a = "fjiwuiwurur"
+
+print(a)

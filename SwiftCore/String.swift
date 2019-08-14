@@ -36,7 +36,7 @@ public extension String {
 //   | | |                                        | | |
 //   | | |   var _countAndFlagsBits: UInt64     >>------------------------------------+
 //   | | |   var _object: Builtin.BridgeObject  >>------------------------------------ -------------------------+
- //  | | |                                        | | |                               |                         |
+//   | | |                                        | | |                               |                         |
 //   | | | #endif                                 | | |                               |                         |
 //   | | +----------------------------------------+ | |                               |                         |
 //   | +--------------------------------------------+ |                               |                         |
@@ -69,7 +69,7 @@ public extension String {
 //         V
 //    _object (64 bits)
 //   
-//    abcdeeee          a => isImmortal            b => largeIsCocoa            e(4 bits) => count of Small String
+//    abcdeeee          a => isImmortal            b => largeIsCocoa            e(4 bits) => count of Small String (4 bit max => 1111 = 15 , so perfert design🚀)
 //    ∧∧∧∧∧∧∧∧          c => isSmall               d => providesFastUTF8
 //    ||||||||
 //    0000000000000000000000000000000000000000000000000000000000000000
@@ -79,11 +79,12 @@ public extension String {
 //       +       \________________________________________________/
 //       |
 //       |
-//       +-->  8 bits, 1 byte => decide to how to store String
-  
-    
-
-    
+//       +---> 8 bits, 1 byte => decide to how to store String
+//                                      |
+//                                      |
+//       +------------------------------+
+//       |
+//       V
 //    if _object.c == 1 {
 //
          // - Small strings
