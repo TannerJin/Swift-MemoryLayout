@@ -69,9 +69,9 @@ public extension String {
 //         V
 //    _object (64 bits)
 //   
-//    abcd              a => isImmortal            b => largeIsCocoa
-//    ∧∧∧∧              c => isSmall               d => providesFastUTF8
-//    ||||
+//    abcdeeee          a => isImmortal            b => largeIsCocoa            e(4 bits) => count of Small String
+//    ∧∧∧∧∧∧∧∧          c => isSmall               d => providesFastUTF8
+//    ||||||||
 //    0000000000000000000000000000000000000000000000000000000000000000
 //    |      ||                                                      |
 //     \    /  \                      56 bits                       /
