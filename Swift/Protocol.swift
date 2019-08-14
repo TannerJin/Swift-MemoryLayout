@@ -22,9 +22,9 @@ import Foundation
 //    witness_table
 //    +----------------------------------------+                              if instance_type.size <= 24 {
 //    |  data: pointer                         |                                 payload_data = instance
-//    |  protocol_method_1: void*              |                              } else {
-//    |  protocol_method_2: void*              |                                 payload_data = instance*
-//    |  protocol_method_3: void*              |                              }
+//    |  protocol_method_0: void*              |                              } else {
+//    |  protocol_method_1: void*              |                                 payload_data = instance*
+//    |  protocol_method_2: void*              |                              }
 //    |  .                                     |
 //    |  .                                     |
 //    +----------------------------------------+
