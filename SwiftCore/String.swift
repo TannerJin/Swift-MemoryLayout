@@ -29,7 +29,7 @@ public extension String {
 //   | | |   var _discriminator: UInt8            | | |
 //   | | |   var _flags: UInt16                   | | |
 //   | | |   var _countAndFlagsBits: UInt64       | | |
-//   | | |
+//   | | |                                        | | |
 //   | | | #else                                  | | |
 //   | | |                                        | | |
 //   | | |     --- 64-bit platforms ---           | | |
@@ -57,7 +57,7 @@ public extension String {
 //    0000000000000000000000000000000000000000000000000000000000000000                                          |
 //    |              ||                                              |                                          |
 //     \   16 bits  /  \                48 bits                     /                                           |
-//      \   flags  /    \                Count                     /                                            |
+//      \   flags  /    \        Count for Large String            /                                            |
 //       \________/      \________________________________________/                                             |
 //                                                                                                              |
 //                                                                                                              |
@@ -69,13 +69,13 @@ public extension String {
 //         V
 //    _object (64 bits)
 //   
-//    abcdeeee          a => isImmortal            b => largeIsCocoa            e(4 bits) => count of Small String (4 bit max => 1111 = 15 , so perfert design🚀)
+//    abcdeeee          a => isImmortal            b => largeIsCocoa            e(4 bits) => count of Small String (4 bit max => 15 , so perfert design🚀)
 //    ∧∧∧∧∧∧∧∧          c => isSmall               d => providesFastUTF8
 //    ||||||||
 //    0000000000000000000000000000000000000000000000000000000000000000
 //    |      ||                                                      |
 //     \    /  \                      56 bits                       /
-//      \  /    \                     pointer                      /
+//      \  /    \               Pointer for Large String           /
 //       +       \________________________________________________/
 //       |
 //       |
@@ -84,18 +84,20 @@ public extension String {
 //                                      |
 //       +------------------------------+
 //       |
+//       |
+//       |
 //       V
 //    if _object.c == 1 {
 //
          // - Small strings
 //
-//       _countAndFlagsBits + _object.pointer = String  (count <= 15 bytes)
+//       (_countAndFlagsBits + _object.pointer)'s size to store String  (count <= 15 bytes)
 //
 //    } else {
 //
          // - Large strings
 //
-//       _object.pointer point to String                (count > 15 bytes)
+//       _object.pointer point to String                                (count > 15 bytes)
 //    }
 
     
@@ -111,7 +113,8 @@ public extension String {
             } else {
                 // - Large strings
                 let _object = unsafeBitCast(self, to: (UInt64, UInt64).self).1
-                let pointerValue = (_object &<< 8) &>> 8
+                let pointerMask = 1 << 56 - 1                     // 56 bits => 111...111
+                let pointerValue = _object & UInt64(pointerMask)
                 return UnsafeMutableRawPointer(bitPattern: UInt(pointerValue))?.advanced(by: 32)
             }
             #endif

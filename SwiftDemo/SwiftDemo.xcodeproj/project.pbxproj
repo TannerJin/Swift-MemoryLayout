@@ -104,12 +104,12 @@
 		A947489F22FACE9F00212E57 /* SwiftCore */ = {
 			isa = PBXGroup;
 			children = (
-				A94748A022FACE9F00212E57 /* Array.swift */,
-				A94748A122FACE9F00212E57 /* Character.swift */,
-				A94748A222FACE9F00212E57 /* Dictionary.swift */,
-				A94748A322FACE9F00212E57 /* String.swift */,
 				A94748A422FACE9F00212E57 /* Bool.swift */,
 				A94748A522FACE9F00212E57 /* Optional.swift */,
+				A94748A322FACE9F00212E57 /* String.swift */,
+				A94748A122FACE9F00212E57 /* Character.swift */,
+				A94748A022FACE9F00212E57 /* Array.swift */,
+				A94748A222FACE9F00212E57 /* Dictionary.swift */,
 				A94748A622FACE9F00212E57 /* Set.swift */,
 			);
 			name = SwiftCore;
