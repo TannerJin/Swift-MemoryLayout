@@ -30,9 +30,7 @@ struct StructValue {
 }
 
 var structValue = StructValue()
-let structValuePointer = withUnsafePointer(to: &structValue) { (pointer) -> UnsafeMutableRawPointer in
-    UnsafeMutableRawPointer(OpaquePointer(pointer))
-}
+let structValuePointer = withUnsafePointer(to: &structValue) { UnsafeMutableRawPointer(mutating: $0) }
 structValuePointer.advanced(by: 2).assumingMemoryBound(to: Int16.self).initialize(to: 99)
 
 // structValue.b = 99
@@ -94,9 +92,7 @@ struct StructValue: SwiftProtocol {
 }
 
 var Protocol: SwiftProtocol = StructValue()
-let protocol_pointer = withUnsafePointer(to: &Protocol) { (pointer) -> UnsafeMutableRawPointer in
-    UnsafeMutableRawPointer(OpaquePointer(pointer))
-}
+let protocol_pointer = withUnsafePointer(to: &Protocol) { UnsafeMutableRawPointer(mutating: $0) }
 
 let witness_table_pointer_value = protocol_pointer.advanced(by: 32).assumingMemoryBound(to: UInt.self).pointee
 let witness_table_pointer = UnsafeMutablePointer<UnsafeMutableRawPointer>.init(bitPattern: witness_table_pointer_value)
@@ -122,9 +118,7 @@ enum EnumValue {
 }
 
 var enumC = EnumValue.c(8)
-let enumCPointer = withUnsafePointer(to: &enumC) { (pointer) -> UnsafeMutableRawPointer in
-     UnsafeMutableRawPointer(OpaquePointer(pointer))
-}
+let enumCPointer = withUnsafePointer(to: &enumC) { UnsafeMutableRawPointer(mutating: $0) }
 enumCPointer.advanced(by: 16).assumingMemoryBound(to: Int8.self).initialize(to: 0x02)
 
 // enumC = EnumValue.f(8)
