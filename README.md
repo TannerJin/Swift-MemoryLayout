@@ -44,16 +44,16 @@ structValuePointer.advanced(by: 2).assumingMemoryBound(to: Int16.self).initializ
 typealias TupleValue = (Int8, Int32, String)
 
 struct StructValue {
-    var a: Int8
-    var b: Int32
-    var c: String
+    var a: Int8 = 4
+    var b: Int32 = 5
+    var c: String = "SwiftTuple"
 }
 
-let structValue = StructValue(a: 4, b: 5, c: "SwiftTuple")
+let structValue = StructValue()
 let tupleValue = unsafeBitCast(structValue, to: TupleValue.self)
 print(tupleValue.1)
 
-// print 5 (structValue.b)
+// print 5    (structValue.b)
 
 // if TupleValue = (Int8, Int8, String) => TupleValue's MemoryLayout != StructValue's MemoryLayout
 ```
