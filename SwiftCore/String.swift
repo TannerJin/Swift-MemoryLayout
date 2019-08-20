@@ -8,7 +8,6 @@
 
 import Foundation
 
-public extension String {
 //   struct String
 //   +------------------------------------------------+
 //   | struct _StringGuts                             |
@@ -34,17 +33,22 @@ public extension String {
 //   | | |                                        | | |
 //   | | |     --- 64-bit platforms ---           | | |
 //   | | |                                        | | |
-//   | | |   var _countAndFlagsBits: UInt64     >>------------------------------------+
-//   | | |   var _object: Builtin.BridgeObject  >>------------------------------------ -------------------------+
-//   | | |                                        | | |                               |                         |
-//   | | | #endif                                 | | |                               |                         |
-//   | | +----------------------------------------+ | |                               |                         |
-//   | +--------------------------------------------+ |                               |                         |
-//   +------------------------------------------------+                               |                         |
-//                                                                                    |                         |
-//                                                                                    |                         |
-//                                                                                    |                         |
-//         +--------------------------------------------------------------------------+                         |
+//   | | |   var _countAndFlagsBits: UInt64       | | |
+//   | | |   var _object: Builtin.BridgeObject    | | |
+//   | | |                                        | | |
+//   | | | #endif                                 | | |
+//   | | +----------------------------------------+ | |
+//   | +--------------------------------------------+ |
+//   +------------------------------------------------+
+//                                                                       +--------------------------------------+
+//                                                                       |                                      |
+//                                                                       |                                      |
+//          / count <= 15, Small    =>  15 bytes(string) + 1 byte(_object.abcdeeee)      \                      |
+//   String                                                                                 16 bytes            |
+//          \ count > 15,  Large    =>  8 bytes(_countAndFlagsBits) + 8 bytes(_object)   /                      |
+//                                                       |                       |                              |
+//                                                       |                       |                              |
+//         +---------------------------------------------+                       +------------------------------+
 //         |                                                                                                    |
 //         |                                                                                                    |
 //         |                                                                                                    |
@@ -57,7 +61,7 @@ public extension String {
 //    0000000000000000000000000000000000000000000000000000000000000000                                          |
 //    |              ||                                              |                                          |
 //     \   16 bits  /  \                48 bits                     /                                           |
-//      \   flags  /    \        Count for Large String            /                                            |
+//      \   flags  /    \        count for Large String            /                                            |
 //       \________/      \________________________________________/                                             |
 //                                                                                                              |
 //                                                                                                              |
@@ -75,36 +79,18 @@ public extension String {
 //    0000000000000000000000000000000000000000000000000000000000000000
 //    |      ||                                                      |
 //     \    /  \                      56 bits                       /
-//      \  /    \               Pointer for Large String           /
+//      \  /    \               pointer for Large String           /
 //       +       \________________________________________________/
 //       |
-//       |
-//       +---> 8 bits, 1 byte => decide to how to store String
-//                                      |
-//                                      |
-//       +------------------------------+
-//       |
-//       |
-//       |
 //       V
-//    if _object.c == 1 {
-//
-         // - Small strings
-//
-//       (_countAndFlagsBits + _object.pointer)'s size to store String  (count <= 15 bytes)
-//
-//    } else {
-//
-         // - Large strings
-//
-//       _object.pointer point to String                                (count > 15 bytes)
-//    }
+//       8 bits, 1 byte
 
-    
+
+public extension String {
     var valuePointer: UnsafeMutableRawPointer? {
         mutating get {
             #if arch(i386) || arch(arm)
-            // wati to do
+            // 32-bit platforms wati to do
             return nil
             #else
             if self.count <= 15 {

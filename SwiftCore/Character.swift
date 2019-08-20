@@ -23,9 +23,7 @@ public extension Character {
     var valuePointer: UnsafeMutableRawPointer {
         mutating get {
             // unicode.bytes.count <= 15
-            return withUnsafePointer(to: &self) { (pointer) -> UnsafeMutableRawPointer in
-                UnsafeMutableRawPointer(OpaquePointer(pointer))
-            }
+            return withUnsafePointer(to: &self) { UnsafeMutableRawPointer(mutating: $0) }
         }
     }
 }

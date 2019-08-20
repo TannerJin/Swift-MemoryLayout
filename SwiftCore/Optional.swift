@@ -17,15 +17,13 @@ public extension Optional {
     
 //    Optional<Wrapped>.bytes count => 1 + Wrapped.bytes count
 
-//    See Enum.Swift
+//    longjmp to Enum.Swift
 //    Int8? = nil :  Optional.none => 00 01        00 => self at all not associated enum's value  ;  01 => all associated enum count
 //    Int8? = 4   :  Optional.some => 04 00        04 => associated value                         ;  00 => self at all associated enum's value
     
     var valuePointer: UnsafeMutableRawPointer {
         mutating get {
-            return withUnsafePointer(to: &self) { (pointer) -> UnsafeMutableRawPointer in
-                UnsafeMutableRawPointer(OpaquePointer(pointer))
-            }
+            return withUnsafePointer(to: &self) { UnsafeMutableRawPointer(mutating: $0) }
         }
     }
 }

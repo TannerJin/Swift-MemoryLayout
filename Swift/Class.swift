@@ -13,8 +13,8 @@ import Foundation
 //    |   var isa: objc_class*                                                |
 //    |   var refCount: UInt64  >>>>>>>>---------------------------------------------------------+
 //    |-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -                      |                  |
-//    |   var attribute0: String                                              |                  |
-//    |   var attribute1: [Int]                                               |                  |
+//    |   var property0: String                                               |                  |
+//    |   var property1: [Int]                                                |                  |
 //    |   .                                                                   |                  |
 //    |   .                                                                   |                  |
 //    |   .                                                                   |                  |
@@ -24,8 +24,8 @@ import Foundation
 //    +-----------------------------------------------------------------------+                  |
 //    |   var isa: objc_class*                                                |                  |
 //    |-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -                      |                  |
-//    |   var attribute0: String                                              |                  |
-//    |   var attribute1: [Int]                                               |                  |
+//    |   var property0: String                                               |                  |
+//    |   var property1: [Int]                                                |                  |
 //    |   .                                                                   |                  |
 //    |   .                                                                   |                  |
 //    |   .                                                                   |                  |
@@ -133,7 +133,7 @@ public func WeakRefCount<T: AnyObject>(_ objc: T) -> UInt32? {
 
 
 // MARK: - Helper
-private func assertNotNSObject<T: AnyObject>(_ objc: T) {
+private func assertNotNSObject<T: AnyObject>(_ objc: T) {  // where T != NSObject
     let objcPointer = unsafeBitCast(objc, to: UnsafeMutablePointer<UInt64>.self)
     let nsobjcPointer = unsafeBitCast(NSObject(), to: UnsafeMutablePointer<UInt64>.self)
     assert((objcPointer.pointee != nsobjcPointer.pointee), "NSObject's instace has not refCount")
