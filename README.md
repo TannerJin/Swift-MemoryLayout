@@ -60,17 +60,26 @@ print(tupleValue.1)
 
 ```swift
 class A {
-  var a = 666
+    var a = 666
 }
 
 let a1 = A()
 unowned let unowned_a = a1
 let a2 = a1
-let a3 = a2
 
-let strongRefCount = StrongRefCount(a1)
-let unownedRefCount = UnownedRefCount(a1)
-let hasWeakRef = hasWeakRefCount(a1)
+weak var weak_a = a1
+weak var weak_a2 = a1
+
+unowned let unowned_a2 = a1
+
+let a3 = a2
+let a4 = a2
+weak var weak_a3 = a1
+unowned let unowned_a3 = a1
+
+print(UnownedRefCount(a1))
+print(WeakRefCount(a1)!)
+print(StrongRefCount(a2))
 ```
 
 ### [Protocol](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/Swift/Protocol.swift)
