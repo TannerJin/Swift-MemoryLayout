@@ -14,9 +14,9 @@ import Foundation
 //           | same layout                        |
 //           |                                    |
 //           V                                    V
-//    struct StructValue {
-//       let a: Int8 = 4                       04 00 06 00 08 00 00 00
-//       let b: Int16 = 6        ----->        |  |   \ /   \       /
-//       let c: Int32 = 8                      a  |    b        c
-//    }                                           V
-//                                                (for memory alignment)
+//
+//    struct StructValue {                     04 00 06 00 08 00 00 00
+//       let a: Int8 = 4                       |  |   \ /   \       /
+//       let b: Int16 = 6        ----->        a  |    b        c
+//       let c: Int32 = 8                         V
+//    }                                        (for memory alignment)
