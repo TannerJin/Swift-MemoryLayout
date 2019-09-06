@@ -53,7 +53,7 @@ print(tupleValue.1)
 
 // print 5    (structValue.b)
 
-// if TupleValue = (Int8, Int8, String) => TupleValue's MemoryLayout != StructValue's MemoryLayout
+// if TupleValue = (Int8, Int8, String) =>  MemoryLayout of TupleValue !=  MemoryLayout of StructValue
 ```
 
 ### [Class](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/Swift/Class.swift)   
@@ -149,9 +149,10 @@ boolPointer.initialize(to: -10)
 ### [Optional](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/SwiftCore/Optional.swift)
 
 ```swift
-var optional: Int16?
+var optional: Int16?      // 0x00 0x00 0x01
 var optionalPointer = optional.valuePointer
-optionalPointer.assumingMemoryBound(to: Int16.self).initialize(to: 99)
+optionalPointer.assumingMemoryBound(to: Int16.self).initialize(to: 99)  // 0x63 0x00 0x01
+optionalPointer.advanced(by: MemoryLayout<Int16>.size).assumingMemoryBound(to: UInt8.self).initialize(to: 0x00)  // 0x63 0x00 0x00
 
 // optional = 99
 ```
