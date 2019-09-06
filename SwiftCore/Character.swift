@@ -14,11 +14,11 @@ public extension Character {
 //    |   var _str: String                                        unicode     |
 //    +-----------------------------------------------------------------------+
     
-//              UTF-8  => use 1 ~ 4 bytes        (first byte compatible ASCII, 0x00...0x7F)
+//              UTF-8  => use 1 ~ 4 bytes        (one can byte compatible ASCII, 0x00...0x7F)
 //           /
-//    unicode - UTF-16 => use 1 ~ 2 bytes        (can't compatible ASCII)
+//    unicode - UTF-16 => use 2/4 bytes  
 //           \
-//              UTF-32 => use 1 bytes
+//              UTF-32 => use 4 bytes
     
     var valuePointer: UnsafeMutableRawPointer {
         mutating get {

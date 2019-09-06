@@ -94,7 +94,7 @@ public func StrongRefCount<T: AnyObject>(_ objc: T) -> UInt32 {
     }
     
     if hasWeakRefCount(objc) {
-        let bitsValue = getSileTablePointer(objc)?.assumingMemoryBound(to: HeapObjectSideTableEntry.self).pointee.bits.1
+        let bitsValue = getSileTablePointer(objc)?.pointee.bits.1
         return getStrongRefCount(bitsValue: UInt64(bitsValue!))
     } else {
         let objcPointer = unsafeBitCast(objc, to: UnsafeMutablePointer<UInt64>.self)
@@ -113,7 +113,7 @@ public func UnownedRefCount<T: AnyObject>(_ objc: T) -> UInt32 {
     }
     
     if hasWeakRefCount(objc) {
-        let bitsValue = getSileTablePointer(objc)?.assumingMemoryBound(to: HeapObjectSideTableEntry.self).pointee.bits.1
+        let bitsValue = getSileTablePointer(objc)?.pointee.bits.1
         return getUnownedRefCount(bitsValue: UInt64(bitsValue!))
     } else {
         let objcPointer = unsafeBitCast(objc, to: UnsafeMutablePointer<UInt64>.self)
@@ -126,7 +126,7 @@ public func UnownedRefCount<T: AnyObject>(_ objc: T) -> UInt32 {
 public func WeakRefCount<T: AnyObject>(_ objc: T) -> UInt32? {
     assertNotNSObject(objc)
     
-    if hasWeakRefCount(objc), let sileTable = getSileTablePointer(objc)?.assumingMemoryBound(to: HeapObjectSideTableEntry.self)  {
+    if hasWeakRefCount(objc), let sileTable = getSileTablePointer(objc)  {
         return sileTable.pointee.weakBits - 1          // The weak RC also has an extra +1, this +1 is decremented after the object's allocation is freed(Apple)
     }
     
@@ -156,7 +156,7 @@ private func assertNotNSObject<T: AnyObject>(_ objc: T) {  // where T != NSObjec
     assert(!(objc is NSObject), "NSObject's instace has not refCount property, look up it at runtime.objc")
 }
 
-private func getSileTablePointer<T: AnyObject>(_ objc: T) -> UnsafeMutableRawPointer? {
+private func getSileTablePointer<T: AnyObject>(_ objc: T) -> UnsafeMutablePointer<HeapObjectSideTableEntry>? {
     assertNotNSObject(objc)
     assert(hasWeakRefCount(objc))
     
@@ -164,11 +164,11 @@ private func getSileTablePointer<T: AnyObject>(_ objc: T) -> UnsafeMutableRawPoi
     let bitsValue = objcPointer.advanced(by: 1).pointee
     let mask: UInt64 = 1 << 62 - 1                  // 62 bits => 111...111
     let slieTableValue = bitsValue & mask
-    return UnsafeMutableRawPointer(bitPattern: UInt(slieTableValue << 3))
+    return UnsafeMutableRawPointer(bitPattern: UInt(slieTableValue << 3))?.assumingMemoryBound(to: HeapObjectSideTableEntry.self)
 }
 
 private struct HeapObjectSideTableEntry {
-    var object: UnsafeMutableRawPointer
-    var bits: (UInt64, Int64)
-    var weakBits: UInt32
+    let object: UnsafeMutableRawPointer
+    let bits: (UInt64, Int64)
+    let weakBits: UInt32
 }
