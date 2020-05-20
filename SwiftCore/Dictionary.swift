@@ -76,7 +76,7 @@ insert:  if hash(NewKey) = 2(bitOffset), but hash offset is occupied(bit is 1) {
      
 get:    if hash(Key) = 2(bitOffset) {
             when Keys[bitOffset] != Key {
-                repeat bitOffset += 1
+                 bitOffset += 1
             }
             return Values[bitOffset]
         }
