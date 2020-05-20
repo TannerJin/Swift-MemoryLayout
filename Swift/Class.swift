@@ -167,6 +167,12 @@ private func getSileTablePointer<T: AnyObject>(_ objc: T) -> UnsafeMutablePointe
     return UnsafeMutableRawPointer(bitPattern: UInt(slieTableValue << 3))?.assumingMemoryBound(to: HeapObjectSideTableEntry.self)
 }
 
+/*
+    class A {
+    }
+    let a = A()
+    weak var a2 = a    // a2 is pointe to HeapObjectSideTableEntry
+ */
 private struct HeapObjectSideTableEntry {
     let object: UnsafeMutableRawPointer
     let bits: (UInt64, Int64)
