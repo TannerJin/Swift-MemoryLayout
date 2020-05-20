@@ -66,7 +66,7 @@ import Foundation
 //    |                              |                               |
 //    V                              V                               V
 //   UseSlow(1 bit)            IsDeiniting(1 bit)                IsImmortal(1 bit)
-
+//                                                               (is Static Object)
 //    ∧                                                              ∧
 //    |                                                              |
 //    | HeapObjectSideTableEntry* (64 bits)                          |

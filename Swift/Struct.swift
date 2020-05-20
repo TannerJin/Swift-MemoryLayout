@@ -14,3 +14,5 @@ import Foundation
 //       let c: Int32 = 8           |      \ /   \       /
 //    }                             a       b        c
 
+
+// FYI: if you want to get the offset of each property at runtime, you can see https://github.com/apple/swift/blob/master/docs/ABI/TypeMetadata.rst

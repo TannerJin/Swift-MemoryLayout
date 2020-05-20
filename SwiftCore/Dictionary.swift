@@ -30,14 +30,58 @@ public extension Dictionary {
 //    |   var _extra: Int16                                                   |
 //    |   var _age: Int32                                                     |
 //    |   var _seed: Int                                                      |
-//    |   var _rawKeys: UnsafeMutableRawPointer       // 48 byte offset       |
-//    |   var _rawValues: UnsafeMutableRawPointer     // 56 byte offset       |
-//    |   var _bucketCount: Int                                               |
-//    |   var _metadata: UnsafeMutablePointer<_HashTable.Word>                |
-//    |   var _hashTable: _HashTable                                          |
-//    +-----------------------------------------------------------------------+
+//    |   var _rawKeys: UnsafeMutableRawPointer       // 48 byte offset      -----------------------+
+//    |   var _rawValues: UnsafeMutableRawPointer     // 56 byte offset      -----------------------+---------------+
+//    |   var _bucketCount: Int                                               |                     |               |
+//    |   var _metadata(get): UnsafeMutablePointer<_HashTable.Word>          -----------------+     |               |
+//    |   var _hashTable(get): _HashTable                                     |               |     |               |
+//    +-----------------------------------------------------------------------+               |     |               |
+//                                                                                            |     |               |
+//                                                                                            |     |               |
+//                                                                                            |     |               |
+/*    Dictionary                                                                              |     |               |
+          |                                                                                   |     |               |
+          V                                                                                   |     |               |
+      +-------------------------------------+                                                 |     |               |
+      |    RawDictionaryStorage (MetaData)  |                                                 |     |               |
+      |                                     |                                                 |     |               |
+      +-------------------------------------+  <----------------------------------------------+     |               |
+      |         Word (Hash Offset)          |                                                       |               |
+      |                                     |                                                       |               |
+      +-------------------------------------+  <----------------------------------------------------+               |
+      |         Keys                        |                                                                       |
+      |                                     |                                                                       |
+      +-------------------------------------+  <--------------------------------------------------------------------+
+      |         Values                      |
+      |                                     |
+      +-------------------------------------+
+     
+      Word (Hash Offset)
+      |
+      V                     64(32) bits
+                     /                     \
+      if Word[0] = 0b1000000...0000000000100   =>  Keys[2] != nil and Keys[63] != nil
+      if Word[1] = 0b1000000...0000000000101   =>  Keys[64] != nil and Keys[66] != nil and ...
+     
+insert:  if hash(NewKey) = 2(bitOffset), but hash offset is occupied(bit is 1) {
+            repeat {
+                bitOffset += 1
+            }  when hash offset is not occupied(bit is 0)
+     
+            Word[0] = 0b1000000...0000000001100
+            Keys[bitOffset] = NewKey
+            Values[bitOffset] = NewValue
+         }
+        
+     
+get:    if hash(Key) = 2(bitOffset) {
+            when Keys[bitOffset] != Key {
+                repeat bitOffset += 1
+            }
+            return Values[bitOffset]
+        }
+ */
     
-//    emty dictionary: _rawKeys => 0x0000000000000001; _rawValues => 0x0000000000000001
     
     
     // count value of address

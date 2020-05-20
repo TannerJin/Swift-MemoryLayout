@@ -73,7 +73,7 @@ import Foundation
 //         V
 //    _object (64 bits)
 //   
-//    abcdeeee          a => isImmortal            b => largeIsCocoa            e(4 bits) => count of Small String (4 bit max => 15 , so perfert design🚀)
+//    abcdeeee          a => isImmortal            b => largeIsCocoa            e(4 bits) => count of Small String
 //    ∧∧∧∧∧∧∧∧          c => isSmall               d => providesFastUTF8
 //    ||||||||
 //    0000000000000000000000000000000000000000000000000000000000000000
