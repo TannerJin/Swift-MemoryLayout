@@ -63,7 +63,7 @@ public extension Dictionary {
       if Word[0] = 0b1000000...0000000000100   =>  Keys[2] != nil and Keys[63] != nil
       if Word[1] = 0b1000000...0000000000101   =>  Keys[64] != nil and Keys[66] != nil and ...
      
-insert:  if hash(NewKey) = 2(bitOffset), but hash offset is occupied(bit is 1) {
+set:    if hash(NewKey) = 2(bitOffset), but hash offset is occupied(bit is 1) {
             repeat {
                 bitOffset += 1
             }  when hash offset is not occupied(bit is 0)

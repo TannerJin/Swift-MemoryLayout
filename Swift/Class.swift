@@ -19,44 +19,11 @@ import Foundation
 //    |   .                                                                   |                  |
 //    |   .                                                                   |                  |
 //    +-----------------------------------------------------------------------+                  |
-                                                                                            //   |
-//    class: NSObject                                                                            |
-//    +-----------------------------------------------------------------------+                  |
-//    |   var isa: objc_class*                                                |                  |
-//    |-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -                      |                  |
-//    |   var property0: String                                               |                  |
-//    |   var property1: [Int]                                                |                  |
-//    |   .                                                                   |                  |
-//    |   .                                                                   |                  |
-//    |   .                                                                   |                  |
-//    +-----------------------------------------------------------------------+                  |
-                                                                                            //   |
-                                                                                            //   |
-                                                                                            //   |
+//                                                                                               |
+//                                                                                               |
 //                      +------------------------------------------------------------------------+
 //                      |
 //                      V
-//    refCount(8 bytes, 64 bits)
-//       /
-//      |
-//      V
-//    InlineRefCounts {
-//        atomic<InlineRefCountBits> {
-//            strong RC + unowned RC + flags
-//            OR
-//            HeapObjectSideTableEntry*
-//        }          /
-//    }             |
-//                  V
-//    HeapObjectSideTableEntry {
-//        SideTableRefCounts {
-//            object pointer
-//            atomic<SideTableRefCountBits> {
-//                strong RC + unowned RC + weak RC + flags
-//            }
-//        }
-//    }
-
 //    InlineRefCountBits (64 bits)                                 
 //    0000000000000000000000000000000000000000000000000000000000000000
 //    ||                            |||                             ||
@@ -66,7 +33,7 @@ import Foundation
 //    |                              |                               |
 //    V                              V                               V
 //   UseSlow(1 bit)            IsDeiniting(1 bit)                IsImmortal(1 bit)
-//                                                               (is Static Object)
+//                                                               (is Static Object 单例)
 //    ∧                                                              ∧
 //    |                                                              |
 //    | HeapObjectSideTableEntry* (64 bits)                          |
@@ -79,10 +46,102 @@ import Foundation
 //     V
 //   SideTableMark(1 bit)
 
+/*   HeapObject:
+     
+     if (StrongExtraRefCount or UnownedRefCount is overFlow) or hasWeakRef {
+        Use HeapObjectSideTable
+     }
+     
+     struct HeapObjectSideTable {
+        let object: UnsafeMutableRawPointer
+        let bits: (UInt64, Int64)   // include StrongExtraRefCount and UnownedRefCount
+        let weakBits: UInt32
+     }
+ 
+     each weak variable will pointe to the same HeapObjectSideTable of the headObject, so *weak_variable = (heapObject*)objc
+ 
+     for example:
+        class A {
+        }
+        let a = A()
+        weak var a2 = a    // a2 is pointe to HeapObjectSideTable of a. so, (*a2) = (objc*)object
+ */
 
 
-// unsafeBitCast is inlinable. enter unsafeBitCast, objc will retain 1. finish unsafeBitCast, objc will release 1.
-// yout can use at debug, but not use at release
+//    class: NSObject
+//    +-----------------------------------------------------------------------+
+//    |   var isa: objc_class*                                             -------------+
+//    |-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -                      |         |
+//    |   var property0: String                                               |         |
+//    |   var property1: [Int]                                                |         |
+//    |   .                                                                   |         |
+//    |   .                                                                   |         |
+//    |   .                                                                   |         |
+//    +-----------------------------------------------------------------------+         |
+//                                                                                      |
+//                                                                                      |
+//                      +---------------------------------------------------------------+
+//                      |
+//                      V
+//    isa (64 bits)
+//    0000000000000000000000000000000000000000000000000000000000000000
+//    |      |||||    ||                                          ||||
+//    |      |||||    ||                                          ||||
+//    |      |||||    ||                                          ||||
+//     \    / ||| \  /  \                                        / |||
+//    extra_rc||| magic            class* (metaClass)              |||
+//            V||                                                  V||
+//   side_table||                                       has_cxx_dtor||
+//             ||                                                   ||
+//             V|                                                   V|
+//  deallocating|                                           has_assoc|
+//              |                                                    |
+//              V                                                    V
+// weakly_referenced                                        nonpointer
+
+/*  NSObject:
+ 
+    if extra_rc > 0xff || objc has weak ref {                                     <--------------+
+        use SideTable and set side_table bit = 1                                                 |
+    }                                                                                            |
+                                                                                                 |
+    static GlobalSideTables = Dictionary<objc, SideTable>.init(bucketCount: 8)  // iOS           |
+                                                                                                 |
+    strct SideTable {                                                                            |
+        var lock: spinlock_t                                                                     |
+                                                                                                 |
+        /*  Int: 0 bit     => objc has weak ref      --------------------------------------------+
+            Int: 1 bit     => objc isDeallocating
+            Int: 2~62 bits => count of extra_rc
+            Int: 63 bit    => ???
+        */
+        var refcnts: Dictionary<objc, Int>
+        var weak_table: Dictionary<objc, weak_entry>
+    }
+ 
+    struct weak_entry {
+        var _objc: NSObject
+ 
+        /* if weak_variables.count > 4
+           weak_variables[0] become pointer and pointe to [&objc]
+           weak_variables[1] = count of weak_variables
+        */
+        var weak_variables: [&objc].init(count: 4)
+    }
+ 
+    
+ Refcnt:
+    GlobalSideTables[objc].refcnts[objc]
+ 
+ WeakEntry:
+    GlobalSideTables[objc].weak_table[objc]
+ */
+
+
+// MARK: - Swift Class
+/* unsafeBitCast is inlinable. enter unsafeBitCast, objc will retain 1. finish unsafeBitCast, objc will release 1.
+   yout can use at debug, but not use at release
+ */
 
 public func StrongRefCount<T: AnyObject>(_ objc: T) -> UInt32 {
     assertNotNSObject(objc)
@@ -167,12 +226,6 @@ private func getSileTablePointer<T: AnyObject>(_ objc: T) -> UnsafeMutablePointe
     return UnsafeMutableRawPointer(bitPattern: UInt(slieTableValue << 3))?.assumingMemoryBound(to: HeapObjectSideTableEntry.self)
 }
 
-/*
-    class A {
-    }
-    let a = A()
-    weak var a2 = a    // a2 is pointe to HeapObjectSideTableEntry
- */
 private struct HeapObjectSideTableEntry {
     let object: UnsafeMutableRawPointer
     let bits: (UInt64, Int64)
