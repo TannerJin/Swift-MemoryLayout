@@ -85,6 +85,7 @@ print(StrongRefCount(a2))
 ### [Protocol](https://github.com/TannerJin/Swift-MemoryLayout/blob/master/Swift/Protocol.swift)
 
 ```swift
+// test with debug 
 protocol SwiftProtocol {
     func foo()
     func foo2()
@@ -106,7 +107,7 @@ let protocol_pointer = withUnsafePointer(to: &Protocol) { UnsafeMutableRawPointe
 let witness_table_pointer_value = protocol_pointer.advanced(by: 32).assumingMemoryBound(to: UInt.self).pointee
 let witness_table_pointer = UnsafeMutablePointer<UnsafeMutableRawPointer>.init(bitPattern: witness_table_pointer_value)
 
-typealias Foo2Method = @convention(thin) ()->Void    // really method => (StructValue) -> ()
+typealias Foo2Method = @convention(thin) ()->Void 
 
 let witness_foo2_pointer = unsafeBitCast(witness_table_pointer!.advanced(by: 2).pointee, to: Foo2Method.self)
 witness_foo2_pointer()
