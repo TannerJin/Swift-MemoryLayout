@@ -63,23 +63,21 @@ public extension Dictionary {
       if Word[0] = 0b1000000...0000000000100   =>  Keys[2] != nil and Keys[63] != nil
       if Word[1] = 0b1000000...0000000000101   =>  Keys[64] != nil and Keys[66] != nil and ...
      
-set:    if hash(NewKey) = 2(bitOffset), but hash offset is occupied(bit is 1) {
-            repeat {
-                bitOffset += 1
-            }  when hash offset is not occupied(bit is 0)
+set:    var bitOffset = hash(NewKey) & bucketCount
+        when hash offset is occupied(bit is 1) {
+            bitOffset += 1
+        }
      
-            Word[0] = 0b1000000...0000000001100
-            Keys[bitOffset] = NewKey
-            Values[bitOffset] = NewValue
-         }
+        set the bit of Word with bitOffset to 1
+        Keys[bitOffset] = NewKey
+        Values[bitOffset] = NewValue
         
      
-get:    if hash(Key) = 2(bitOffset) {
-            when Keys[bitOffset] != Key {
-                 bitOffset += 1
-            }
-            return Values[bitOffset]
+get:    var bitOffset = hash(Key) & bucketCount
+        when Keys[bitOffset] != Key {
+             bitOffset += 1
         }
+        return Values[bitOffset]
  */
     
     
