@@ -89,7 +89,7 @@ import Foundation
 //    |      |||||    ||                                          ||||
 //    |      |||||    ||                                          ||||
 //     \    / ||| \  /  \                                        / |||
-//    extra_rc||| magic            class* (metaClass)              |||
+//    extra_rc||| magic            objc_class*                     |||
 //            V||                                                  V||
 //   side_table||                                       has_cxx_dtor||
 //             ||                                                   ||

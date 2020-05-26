@@ -64,7 +64,7 @@ public extension Dictionary {
       if Word[1] = 0b1000000...0000000000101   =>  Keys[64] != nil and Keys[66] != nil and ...
      
 set:    var bitOffset = hash(NewKey) & bucketCount
-        when hash offset is occupied(bit is 1) {
+        when bitOffset of Word is occupied(bit is 1) {
             bitOffset += 1
         }
      
