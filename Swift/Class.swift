@@ -33,6 +33,8 @@ import Foundation
 //    |                              |                               |
 //    V                              V                               V
 //   UseSlow(1 bit)            IsDeiniting(1 bit)                IsImmortal(1 bit)
+
+//    or
 //                                                               (is Static Object 单例)
 //    ∧                                                              ∧
 //    |                                                              |
@@ -58,7 +60,7 @@ import Foundation
         let weakBits: UInt32
      }
  
-     each weak variable will pointe to the same HeapObjectSideTable of the headObject, so *weak_variable = (heapObject*)objc
+     each weak variable(WeakReference) will pointe to the same HeapObjectSideTable of the headObject, so *weak_variable = (heapObject*)objc
  
      for example:
         class A {
